@@ -3,17 +3,84 @@
 <head>
     <meta charset='utf-8'>
     <title>Odaberi liniju</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <!--<link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>-->
 
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/glavni-izgled.css'>
 </head>
 <body>
+    <!-- Navigacijska traka -->
     <nav>
-        <a href="index.html"><h1>Autobusni sustav</h1></a>
-        <a href="odaberi-liniju.html">Odaberi liniju</a>
+        <ul>
+            <li><a href="index.html">Autobusni sustav</a></li>
+            <li><a href="odaberi-liniju.html">Odaberi liniju</a></li>
+        </ul>
     </nav>
+
+    <div class="row">
+        <div class="col s12">
+            <h1 class="imeLinije center-align">Linija ta i ta</h1>
+        </div>
+
+        <!-- Karta s rutama -->
+        <div class="col s12 l7">
+            <p>Ode je karta. --------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
+        </div>
+
+        <!-- Odabir linije i podatci o liniji -->
+        <div class="col s12 l5">
+            <!-- Odabir -->
+            <div class="input-field">
+                <select>
+                  <option value="" disabled selected>Odaberi autobusnu liniju</option>
+                  <option value="1">1 - neki bus</option>
+                  <option value="2">2 - neki drugi bus</option>
+                  <option value="3">3 - neki treci bus</option>
+                </select>
+            </div>
+
+            <!-- Vrijeme sljedećeg polaska -->
+            <h2>Sljedeći autobus polazi s kolodvora za x minuta.</h2>
+
+            <!-- Vozni red -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sat</th>
+                        <th>PON-PET</th>
+                        <th>SUB</th>
+                        <th>NED i blagdani</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>8:</th>
+                        <td>10, 30, 50</td>
+                        <td>20</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>8:</th>
+                        <td>10, 30, 50</td>
+                        <td>20</td>
+                        <td>55</td>
+                    </tr>
+                    <tr>
+                        <th>8:</th>
+                        <td>10, 30, 50</td>
+                        <td>20</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script src='js/AutobusPodatci.js'></script>
 </body>
 </html>

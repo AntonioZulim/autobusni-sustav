@@ -1,0 +1,35 @@
+body
+{
+    margin: 0;
+}
+nav
+{
+    box-shadow: none;
+    background-color: #ffd600;
+}
+nav ul a
+{
+    height: 100%;
+    color: black;
+}
+h1
+{
+    font-size: xx-large;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+h2
+{
+    font-size: large;
+    margin: 1.5em auto;
+    text-align: center;
+}
+td
+{
+    width: 25%;
+}
+
+.row .col
+{
+    padding: 0 1.5rem;
+}
