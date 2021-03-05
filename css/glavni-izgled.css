@@ -24,9 +24,13 @@ h2
     margin: 1.5em auto;
     text-align: center;
 }
-td
+td:not(.sati)
 {
-    width: 25%;
+    width: 30%;
+}
+td .sati
+{
+    width: 10%;
 }
 
 .row .col

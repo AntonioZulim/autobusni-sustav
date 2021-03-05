@@ -21,16 +21,11 @@
 
     <div class="row">
         <div class="col s12">
-            <h1 class="imeLinije center-align">Linija ta i ta</h1>
+            <h1 id="imeLinije" class="center-align">Linija ta i ta</h1>
         </div>
 
         <!-- Karta s rutama -->
         <div class="col s12 l7">
-            <p>Ode je karta. --------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
-        </div>
-
-        <!-- Odabir linije i podatci o liniji -->
-        <div class="col s12 l5">
             <!-- Odabir -->
             <div class="input-field">
                 <select>
@@ -41,40 +36,19 @@
                 </select>
             </div>
 
+            <div>Ode je karta. --------------------------------------
+                <img width="100%" height="200px">
+            </div>
+            
             <!-- Vrijeme sljedećeg polaska -->
             <h2>Sljedeći autobus polazi s kolodvora za x minuta.</h2>
+        </div>
 
+        <!-- Odabir linije i podatci o liniji -->
+        <div class="col s12 l5">
             <!-- Vozni red -->
-            <table>
-                <thead>
-                    <tr>
-                        <th>Sat</th>
-                        <th>PON-PET</th>
-                        <th>SUB</th>
-                        <th>NED i blagdani</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>8:</th>
-                        <td>10, 30, 50</td>
-                        <td>20</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th>8:</th>
-                        <td>10, 30, 50</td>
-                        <td>20</td>
-                        <td>55</td>
-                    </tr>
-                    <tr>
-                        <th>8:</th>
-                        <td>10, 30, 50</td>
-                        <td>20</td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table><div id="textSection"></div>
+            <table id="tabVozniRed"></table>
+            <p id="dodatneInfo"></p>
         </div>
     </div>
     
