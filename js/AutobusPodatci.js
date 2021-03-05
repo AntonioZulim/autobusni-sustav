@@ -17,7 +17,6 @@ function SerializeData(data = "")
     }
     console.log(podatci);
 }
-console.log("proba");
 
 // Poziva Materialize JS
 M.AutoInit();
