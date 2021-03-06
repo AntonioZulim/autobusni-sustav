@@ -1,5 +1,3 @@
-let link = "https://raw.githubusercontent.com/AntonioZulim/autobusni-sustav-podatci/main/vozni-red/vozni_red0.csv";
-
 let tablica = document.getElementById("tabVozniRed");
 let imeLinije = document.getElementById("imeLinije");
 let dodatneInfo = document.getElementById("dodatneInfo");
@@ -26,6 +24,8 @@ function ShowData(data = [[]])
 {
     imeLinije.innerHTML = data[1][0];   // ispisuje ime linije
     
+    tablica.innerHTML = ""; // brise sve iz tablice
+
     let tabHead = document.createElement("thead");
     let tabHeadRow = document.createElement("tr");
     for(let i = 0; i<data[2].length; i++)   // ispisuje header tablice
@@ -59,5 +59,3 @@ function ShowData(data = [[]])
 
 // Poziva Materialize JS
 M.AutoInit();
-
-ReadCSVFile(link);

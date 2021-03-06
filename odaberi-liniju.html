@@ -21,34 +21,42 @@
 
     <div class="row">
         <div class="col s12">
-            <h1 id="imeLinije" class="center-align">Linija ta i ta</h1>
+            <h1 id="imeLinije" class="center-align">Odaberi liniju</h1>
         </div>
 
         <!-- Karta s rutama -->
         <div class="col s12 l7">
-            <!-- Odabir -->
-            <div class="input-field">
-                <select>
-                  <option value="" disabled selected>Odaberi autobusnu liniju</option>
-                  <option value="1">1 - neki bus</option>
-                  <option value="2">2 - neki drugi bus</option>
-                  <option value="3">3 - neki treci bus</option>
-                </select>
-            </div>
-
-            <div>Ode je karta. --------------------------------------
-                <img src="Split_i_linije/splitback.png" h="100%" height="500px">
+            <div id="karta">
+                <img src="Split_i_linije/linija1.png" width="100%">
             </div>
             
-            <!-- Vrijeme sljedećeg polaska -->
-            <h2>Sljedeći autobus polazi s kolodvora za x minuta.</h2>
         </div>
 
         <!-- Odabir linije i podatci o liniji -->
         <div class="col s12 l5">
+            <!-- Odabir -->
+            <div class="input-field">
+                <select id="odabir">
+                  <option value="" disabled selected>Odaberi autobusnu liniju</option>
+                  <option value="0">1 STARINE - HNK - STARINE</option>
+                  <option value="1">2 neki drugi bus</option>
+                  <option value="2">3 neki treci bus</option>
+                </select>
+            </div>
+
+            <!-- Vrijeme sljedećeg polaska -->
+            <h2>Sljedeći autobus polazi s kolodvora za x minuta.</h2>
+
             <!-- Vozni red -->
-            <table id="tabVozniRed"></table>
-            <p id="dodatneInfo"></p>
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header">Vozni red</div>
+                    <div class="collapsible-body">
+                        <table id="tabVozniRed"></table>
+                        <p id="dodatneInfo">Odaberite liniju da biste vidjeli vozni red.</p>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
     
@@ -57,5 +65,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <script src='js/AutobusPodatci.js'></script>
+    <script src='js/OdabirLinije.js'></script>
 </body>
 </html>

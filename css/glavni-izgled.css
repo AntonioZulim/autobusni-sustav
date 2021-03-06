@@ -37,3 +37,11 @@ td .sati
 {
     padding: 0 1.5rem;
 }
+
+#karta
+{
+    background-image: url("../Split_i_linije/splitback.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+}
