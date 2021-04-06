@@ -18,6 +18,7 @@ function ConvertData(data = "")
         podatci[i] = redovi[i].split(';');
     }
     ShowData(podatci);
+    CalculateNextLineTime(podatci);
 }
 
 function ShowData(data = [[]])
@@ -57,5 +58,48 @@ function ShowData(data = [[]])
     dodatneInfo.innerHTML = data[0][0]  + `<br><br>` + data[data.length-3][0] + `<br>` + data[data.length-2][0];
 }
 
-// Poziva Materialize JS
-M.AutoInit();
+function CalculateNextLineTime(data)
+{
+    let vrijeme = new Date();
+    let sat = vrijeme.getHours();
+    let min = vrijeme.getMinutes();
+    let minKretanja = [];
+    let isNextTimeFound = false;
+    let satIndex = Number();
+
+    for(satIndex = 4; satIndex<data.length-3; satIndex++)
+    {
+        if(data[satIndex][0] == sat+":")
+        {
+            break;
+        }
+    }
+    satIndex = 22;  //DEBUG
+    sat = 23;   //DEBUG
+  
+    minKretanja = data[satIndex][1].split(', ').map(Number);
+    for(let i = 0; i<minKretanja.length; i++)
+    {
+        if(minKretanja[i]-min>0)
+        {
+            min = minKretanja[i]-min;
+            isNextTimeFound = true;
+            break;
+        }
+    }
+    if(!isNextTimeFound)
+    {
+        if(satIndex==data.length-4)
+        {
+            satIndex = 3;
+        }
+        satIndex++;
+        minKretanja = data[satIndex][1].split(', ').map(Number);
+        min = min-minKretanja[0];
+    }
+    sat = data[satIndex][0].split(':').map(Number)[0] - sat;
+    if(sat<0)   sat+=24;
+    
+    console.log(sat + " sati i " + min + " minuta");
+    
+}
