@@ -1,12 +1,24 @@
 let tablica = document.getElementById("tabVozniRed");
 let imeLinije = document.getElementById("imeLinije");
 let dodatneInfo = document.getElementById("dodatneInfo");
+let tekstSljedeceLinije = document.getElementById("sljedecaLinija");
+
+let porukaZaLiniju = "Sljedeći autobus polazi s kolodvora za ";
 
 function ReadCSVFile(url)
 {
     fetch(url)
         .then(response => response.text())  // cekamo odgovor pa trazimo tekst
-        .then(data => ConvertData(data)); // odgovor prosljedujemo u drugu funkciju
+        .then(data => ManipulateTimetableData(data)); // odgovor prosljedujemo u drugu funkciju
+}
+
+function ManipulateTimetableData(TimetableData)
+{
+    let timeToNextLine;
+    TimetableData = ConvertData(TimetableData);
+    ShowData(TimetableData);
+    timeToNextLine = CalculateNextLineTime(TimetableData);
+    PrintNextLineTime(timeToNextLine);
 }
 
 function ConvertData(data = "")
@@ -17,8 +29,7 @@ function ConvertData(data = "")
     {
         podatci[i] = redovi[i].split(';');
     }
-    ShowData(podatci);
-    CalculateNextLineTime(podatci);
+    return podatci;
 }
 
 function ShowData(data = [[]])
@@ -64,9 +75,10 @@ function CalculateNextLineTime(data)
     let sat = vrijeme.getHours();
     let min = vrijeme.getMinutes();
     let minKretanja = [];
-    let isNextTimeFound = false;
+    let isInSameHour = false;
     let satIndex = Number();
 
+    // trazenje indeksa za trenutacni sat
     for(satIndex = 4; satIndex<data.length-3; satIndex++)
     {
         if(data[satIndex][0] == sat+":")
@@ -74,20 +86,21 @@ function CalculateNextLineTime(data)
             break;
         }
     }
-    satIndex = 22;  //DEBUG
-    sat = 23;   //DEBUG
   
+    // provjera je li sljedeca linija u isti sat
     minKretanja = data[satIndex][1].split(', ').map(Number);
     for(let i = 0; i<minKretanja.length; i++)
     {
         if(minKretanja[i]-min>0)
         {
             min = minKretanja[i]-min;
-            isNextTimeFound = true;
+            isInSameHour = true;
             break;
         }
     }
-    if(!isNextTimeFound)
+
+    // ako sljedeca linija ne krece isti sat
+    if(!isInSameHour)
     {
         if(satIndex==data.length-4)
         {
@@ -95,11 +108,41 @@ function CalculateNextLineTime(data)
         }
         satIndex++;
         minKretanja = data[satIndex][1].split(', ').map(Number);
-        min = min-minKretanja[0];
+        min = 60-min-minKretanja[0];
     }
+
+    // konacno racunanje vremena do sljedece linije
     sat = data[satIndex][0].split(':').map(Number)[0] - sat;
     if(sat<0)   sat+=24;
+    if(!isInSameHour)   sat--;
     
-    console.log(sat + " sati i " + min + " minuta");
-    
+    return sat*60+min;
+}
+
+function PrintNextLineTime(time = Number())
+{
+    let sat = parseInt(time/60);
+    let min = parseInt(time%60);
+    if (sat > 0)
+    {
+        // provjera za gramaticki tocan ispis rijeci
+        porukaZaLiniju += sat;
+        if(sat%10 == 1 && sat%100/10 != 1)
+            porukaZaLiniju += " sat i ";
+        else if(sat%10 < 5 && sat%100/10 != 1)
+            porukaZaLiniju += " sata i ";
+        else
+            porukaZaLiniju += " sati i ";
+    }
+
+    porukaZaLiniju += min;
+    // ponovna provjera za gramaticki tocan ispis rijeci
+    if (sat%10 == 1 && sat%100/10 != 1)
+        porukaZaLiniju += " minutu.";
+    else if (sat%10 < 5 && sat%100/10 != 1)
+        porukaZaLiniju += " minute.";
+    else
+        porukaZaLiniju += " minuta.";
+
+    tekstSljedeceLinije.innerHTML = porukaZaLiniju;
 }
