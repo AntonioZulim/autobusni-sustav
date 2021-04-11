@@ -4,6 +4,7 @@ let dodatneInfo = document.getElementById("dodatneInfo");
 let tekstSljedeceLinije = document.getElementById("sljedecaLinija");
 
 let porukaZaLiniju = "Sljedeći autobus polazi s kolodvora za ";
+let napomena = "(Napomena: Ne uračunavanju se blagdani.)"
 
 function ReadCSVFile(url)
 {
@@ -74,48 +75,86 @@ function CalculateNextLineTime(data)
     let vrijeme = new Date();
     let sat = vrijeme.getHours();
     let min = vrijeme.getMinutes();
+    let dan = vrijeme.getDay();
     let minKretanja = [];
     let isInSameHour = false;
+    let isHourInTable = false;
     let satIndex = Number();
+    let danIndex;
+
+    // provjera koji je dan
+    if(dan == 6)
+        danIndex = 2;
+    else if(dan == 0)
+        danIndex = 3;
+    else
+        danIndex = 1;
 
     // trazenje indeksa za trenutacni sat
     for(satIndex = 4; satIndex<data.length-3; satIndex++)
     {
-        if(data[satIndex][0] == sat+":")
+        if(data[satIndex][0] == sat.toLocaleString(undefined, {minimumIntegerDigits: 2}) + ":")
         {
+            isHourInTable = true;
             break;
         }
     }
-  
-    // provjera je li sljedeca linija u isti sat
-    minKretanja = data[satIndex][1].split(', ').map(Number);
-    for(let i = 0; i<minKretanja.length; i++)
+
+    if(isHourInTable)
     {
-        if(minKretanja[i]-min>0)
+        // provjera je li sljedeca linija u isti sat
+        minKretanja = data[satIndex][danIndex].split(', ').map(Number);
+        for(let i = 0; i<minKretanja.length; i++)
         {
-            min = minKretanja[i]-min;
-            isInSameHour = true;
-            break;
+            if(minKretanja[i]-min>0)
+            {
+                min = minKretanja[i]-min;
+                isInSameHour = true;
+                break;
+            }
         }
+    }
+    else    // ako trenutni sat nije u tablici
+    {
+        satIndex = 3;
     }
 
     // ako sljedeca linija ne krece isti sat
     if(!isInSameHour)
     {
-        if(satIndex==data.length-4)
+        do
         {
-            satIndex = 3;
+            if(satIndex==data.length-4) // sljedeci dan
+            {
+                satIndex = 3;
+                dan = dan > 6 ? 0 : dan + 1;
+                if (dan == 6)
+                    danIndex = 2;
+                else if (dan == 0)
+                    danIndex = 3;
+                else
+                    danIndex = 1;
+            }
+            
+            satIndex++;
+            minKretanja = data[satIndex][danIndex].split(', ');
         }
-        satIndex++;
-        minKretanja = data[satIndex][1].split(', ').map(Number);
-        min = 60-min-minKretanja[0];
+        while(minKretanja=="");
+
+        minKretanja = minKretanja.map(Number);
+        min = 60-min+minKretanja[0];
     }
 
     // konacno racunanje vremena do sljedece linije
     sat = data[satIndex][0].split(':').map(Number)[0] - sat;
     if(sat<0)   sat+=24;
     if(!isInSameHour)   sat--;
-    
+    if(min>=60)
+    {
+        min-=60;
+        sat++;
+    }
+
     return sat*60+min;
 }
 
@@ -123,26 +162,35 @@ function PrintNextLineTime(time = Number())
 {
     let sat = parseInt(time/60);
     let min = parseInt(time%60);
-    if (sat > 0)
+    if (sat!=0)
     {
         // provjera za gramaticki tocan ispis rijeci
         porukaZaLiniju += sat;
         if(sat%10 == 1 && sat%100/10 != 1)
-            porukaZaLiniju += " sat i ";
-        else if(sat%10 < 5 && sat%100/10 != 1)
-            porukaZaLiniju += " sata i ";
+            porukaZaLiniju += " sat";
+        else if(sat%10 < 5 && sat%10 > 1 && sat%100/10 != 1)
+            porukaZaLiniju += " sata";
         else
-            porukaZaLiniju += " sati i ";
+            porukaZaLiniju += " sati";
+
+        if(min!=0)
+            porukaZaLiniju += " i ";
+        else
+            porukaZaLiniju += ".";
     }
 
-    porukaZaLiniju += min;
-    // ponovna provjera za gramaticki tocan ispis rijeci
-    if (sat%10 == 1 && sat%100/10 != 1)
-        porukaZaLiniju += " minutu.";
-    else if (sat%10 < 5 && sat%100/10 != 1)
-        porukaZaLiniju += " minute.";
-    else
-        porukaZaLiniju += " minuta.";
+    if(min!=0)
+    {   
+        porukaZaLiniju += min;
+        // ponovna provjera za gramaticki tocan ispis rijeci
+        if (min%10 == 1 && min%100/10 != 1)
+            porukaZaLiniju += " minutu.";
+        else if (min%10 < 5 && min%10 > 1 && min%100/10 != 1)
+            porukaZaLiniju += " minute.";
+        else
+            porukaZaLiniju += " minuta.";
+    
+    }
 
-    tekstSljedeceLinije.innerHTML = porukaZaLiniju;
+    tekstSljedeceLinije.innerHTML = porukaZaLiniju + "<br>" + napomena;
 }
