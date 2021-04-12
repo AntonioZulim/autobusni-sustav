@@ -3,7 +3,6 @@ let imeLinije = document.getElementById("imeLinije");
 let dodatneInfo = document.getElementById("dodatneInfo");
 let tekstSljedeceLinije = document.getElementById("sljedecaLinija");
 
-let porukaZaLiniju = "Sljedeći autobus polazi s kolodvora za ";
 let napomena = "(Napomena: Ne uračunavanju se blagdani.)"
 
 function ReadCSVFile(url)
@@ -160,15 +159,18 @@ function CalculateNextLineTime(data)
 
 function PrintNextLineTime(time = Number())
 {
+    let porukaZaLiniju = "Sljedeći autobus polazi s kolodvora za ";
+    
     let sat = parseInt(time/60);
     let min = parseInt(time%60);
     if (sat!=0)
     {
-        // provjera za gramaticki tocan ispis rijeci
         porukaZaLiniju += sat;
-        if(sat%10 == 1 && sat%100/10 != 1)
+        
+        // provjera za gramaticki tocan ispis rijeci
+        if(sat%10 == 1 && parseInt(sat%100/10) != 1)
             porukaZaLiniju += " sat";
-        else if(sat%10 < 5 && sat%10 > 1 && sat%100/10 != 1)
+        else if(sat%10 < 5 && sat%10 > 1 && parseInt(sat%100/10) != 1)
             porukaZaLiniju += " sata";
         else
             porukaZaLiniju += " sati";
@@ -180,16 +182,16 @@ function PrintNextLineTime(time = Number())
     }
 
     if(min!=0)
-    {   
+    {
         porukaZaLiniju += min;
+
         // ponovna provjera za gramaticki tocan ispis rijeci
-        if (min%10 == 1 && min%100/10 != 1)
+        if (min%10 == 1 && parseInt(min%100/10) != 1)
             porukaZaLiniju += " minutu.";
-        else if (min%10 < 5 && min%10 > 1 && min%100/10 != 1)
+        else if (min%10 < 5 && min%10 > 1 && parseInt(min%100/10) != 1)
             porukaZaLiniju += " minute.";
         else
             porukaZaLiniju += " minuta.";
-    
     }
 
     tekstSljedeceLinije.innerHTML = porukaZaLiniju + "<br>" + napomena;
