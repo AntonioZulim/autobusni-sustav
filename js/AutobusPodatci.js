@@ -12,12 +12,12 @@ function ReadCSVFile(url)
         .then(data => ManipulateTimetableData(data)); // odgovor prosljedujemo u drugu funkciju
 }
 
-function ManipulateTimetableData(TimetableData)
+function ManipulateTimetableData(timetableData)
 {
     let timeToNextLine;
-    TimetableData = ConvertData(TimetableData);
-    ShowData(TimetableData);
-    timeToNextLine = CalculateNextLineTime(TimetableData);
+    timetableData = ConvertData(timetableData);
+    ShowData(timetableData);
+    timeToNextLine = CalculateNextLineTime(timetableData);
     PrintNextLineTime(timeToNextLine);
 }
 
@@ -166,7 +166,7 @@ function PrintNextLineTime(time = Number())
     if (sat!=0)
     {
         porukaZaLiniju += sat;
-        
+
         // provjera za gramaticki tocan ispis rijeci
         if(sat%10 == 1 && parseInt(sat%100/10) != 1)
             porukaZaLiniju += " sat";
