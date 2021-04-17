@@ -38,8 +38,6 @@ function ShowData(data = [[]])
     
     tablica.innerHTML = ""; // brise sve iz tablice
 
-    console.table(data);
-
     let tabHeadRow = document.createElement("tr");
     for(let i = 0; i<data[2].length; i++)   // ispisuje header tablice
     {
