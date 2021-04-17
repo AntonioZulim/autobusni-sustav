@@ -10,67 +10,66 @@ odabir.addEventListener("change", () =>
     let ime = "vozni_red" + odabir.value + ".csv";
     ReadCSVFile(link + ime);    // poziva funkciju iz AutobusPodatci.js
 
-    promjenaRute(odabir);
+    PromjenaRute(odabir);
 })
 
-function promjenaRute(odabir){
-    console.log(odabir.value);
-    switch (odabir.value) {
-        case 0: document.getElementById('ruta').src='Split_i_linije/linija1.png';
+function PromjenaRute(odabir){
+    switch (Number(odabir.value)) {
+        case 0: ruta.src='Split_i_linije/linija1.png';
         break;
         case 1: ruta.src="Split_i_linije/linija2.png";
         break;
         case 2: ruta.src="Split_i_linije/linija2.png";
         break;
-        case 3: ruta.src="Split_i_linije/linija3.png";
-        break;
         case 4: ruta.src="Split_i_linije/linija3.png";
         break;
-        case 5: document.getElementById('ruta').src="Split_i_linije/linija5.png";
+        case 5: ruta.src="Split_i_linije/linija3.png";
         break;
-        case 6: document.getElementById('ruta').src="Split_i_linije/linija5a.png";
+        case 6: ruta.src="Split_i_linije/linija5.png";
         break;
-        case 7: document.getElementById('ruta').src="Split_i_linije/linija6.png";
+        case 7: ruta.src="Split_i_linije/linija5a.png";
         break;
-        case 8: document.getElementById('ruta').src="Split_i_linije/linija7.png";
+        case 8: ruta.src="Split_i_linije/linija6.png";
         break;
-        case 9: document.getElementById('ruta').src="Split_i_linije/linija7.png";
+        case 9: ruta.src="Split_i_linije/linija7.png";
         break;
-        case 10: document.getElementById('ruta').src="Split_i_linije/linija8.png";
+        case 10: ruta.src="Split_i_linije/linija7.png";
         break;
-        case 11: document.getElementById('ruta').src="Split_i_linije/linija8.png";
+        case 11: ruta.src="Split_i_linije/linija8.png";
         break;
-        case 12: document.getElementById('ruta').src="Split_i_linije/linija9.png";
+        case 12: ruta.src="Split_i_linije/linija8.png";
         break;
-        case 13: document.getElementById('ruta').src="Split_i_linije/linija10.png";
+        case 13: ruta.src="Split_i_linije/linija9.png";
         break;
-        case 14: document.getElementById('ruta').src="Split_i_linije/linija11.png";
+        case 14: ruta.src="Split_i_linije/linija10.png";
         break;
-        case 15: document.getElementById('ruta').src="Split_i_linije/linija11.png";
+        case 15: ruta.src="Split_i_linije/linija11.png";
         break;
-        case 16: document.getElementById('ruta').src="Split_i_linije/linija12.png";
+        case 94: ruta.src="Split_i_linije/linija11.png";
         break;
-        case 17: document.getElementById('ruta').src="Split_i_linije/linija12.png";
+        case 16: ruta.src="Split_i_linije/linija12.png";
         break;
-        case 18: document.getElementById('ruta').src="Split_i_linije/linija14.png";
+        case 17: ruta.src="Split_i_linije/linija12.png";
         break;
-        case 19: document.getElementById('ruta').src="Split_i_linije/linija14.png";
+        case 18: ruta.src="Split_i_linije/linija14.png";
         break;
-        case 20: document.getElementById('ruta').src="Split_i_linije/linija15.png";
+        case 19: ruta.src="Split_i_linije/linija14.png";
         break;
-        case 21: document.getElementById('ruta').src="Split_i_linije/linija16.png";
+        case 20: ruta.src="Split_i_linije/linija15.png";
         break;
-        case 22: document.getElementById('ruta').src="Split_i_linije/linija17.png";
+        case 21: ruta.src="Split_i_linije/linija16.png";
         break;
-        case 23: document.getElementById('ruta').src="Split_i_linije/linija17.png";
+        case 22: ruta.src="Split_i_linije/linija17.png";
         break;
-        case 24: document.getElementById('ruta').src="Split_i_linije/linija18.png";
+        case 23: ruta.src="Split_i_linije/linija17.png";
         break;
-        case 26: document.getElementById('ruta').src="Split_i_linije/linija21.png";
+        case 24: ruta.src="Split_i_linije/linija18.png";
         break;
-        case 27: document.getElementById('ruta').src="Split_i_linije/linija22.png";
+        case 26: ruta.src="Split_i_linije/linija21.png";
         break;
-        default: document.getElementById('ruta').src="Split_i_linije/prazno.png";
+        case 27: ruta.src="Split_i_linije/linija22.png";
+        break;
+        default: ruta.src="Split_i_linije/prazno.png";
         break;
     }
 }
