@@ -38,7 +38,8 @@ function ShowData(data = [[]])
     
     tablica.innerHTML = ""; // brise sve iz tablice
 
-    let tabHead = document.createElement("thead");
+    console.table(data);
+
     let tabHeadRow = document.createElement("tr");
     for(let i = 0; i<data[2].length; i++)   // ispisuje header tablice
     {
@@ -49,7 +50,7 @@ function ShowData(data = [[]])
     tablica.appendChild(tabHeadRow);
 
     let tabBody = document.createElement("tbody");
-    for(let i = 3; i<data.length-3; i++)    // ispisuje tijelo tablice
+    for(let i = 3; i<data.length-2; i++)    // ispisuje tijelo tablice
     {
         let tabRow = document.createElement("tr");
         for(let j = 0; j<data[i].length; j++)
@@ -66,7 +67,7 @@ function ShowData(data = [[]])
     }
     tablica.appendChild(tabBody);
 
-    dodatneInfo.innerHTML = data[0][0]  + `<br><br>` + data[data.length-3][0] + `<br>` + data[data.length-2][0];
+    dodatneInfo.innerHTML = data[0][0]  + `<br><br>` + data[data.length-2][0] + `<br>` + data[data.length-1][0];
 }
 
 function CalculateNextLineTime(data)
