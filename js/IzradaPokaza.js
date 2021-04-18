@@ -1,29 +1,21 @@
 M.AutoInit();
 
-
-$(document).ready(function() {
-    $('input#input_text, textarea#textarea2').characterCounter();
-  });
-
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems, options);
-  });
-
+document.getElementById("izrada").addEventListener("click", uzimanjePodataka);
 
 function uzimanjePodataka() {
     let ime = document.getElementsByName("ime");
-    let prezime = documet.getElementsByName("prezime");
-    let mjesto = documet.getElementsByName("mjesto");
-    let datum = documet.getElementsByName("datum");
+    let prezime = document.getElementsByName("prezime");
+    let mjesto = document.getElementsByName("mjesto");
+    let datum = document.getElementsByName("datum");
     let oib = document.getElementsByName("oib");
-    console.log(ime);
-    console.log(prezime);
-
-
+    
+    localStorage.setItem("ime", ime);
+    localStorage.setItem("prezime", prezime);
+    localStorage.setItem("mjesto", mjesto);
+    localStorage.setItem("datum", datum);
+    localStorage.setItem("oib", oib);
 
     location.replace("pokaz.html");
   
 }
 
-documet.getElementById("izrada").addEventListener("click", uzimanjePodataka);
