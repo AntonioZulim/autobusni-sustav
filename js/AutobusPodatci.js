@@ -77,8 +77,10 @@ function CalculateNextLineTime(data)
     let minKretanja = [];
     let isInSameHour = false;
     let isHourInTable = false;
+    let isTimetableEmpty = false;
     let satIndex = Number();
     let danIndex;
+    let prosloSati = 0;
 
     // provjera koji je dan
     if(dan == 6)
@@ -101,9 +103,11 @@ function CalculateNextLineTime(data)
     if(isHourInTable)
     {
         // provjera je li sljedeca linija u isti sat
-        minKretanja = data[satIndex][danIndex].split(', ').map(Number);
+        minKretanja = data[satIndex][danIndex].split(', ');
         for(let i = 0; i<minKretanja.length; i++)
         {
+            let minBroj = minKretanja[i].split(/ |-/);
+            minKretanja[i] = Number(minBroj[0]);
             if(minKretanja[i]-min>0)
             {
                 min = minKretanja[i]-min;
@@ -120,10 +124,13 @@ function CalculateNextLineTime(data)
     // ako sljedeca linija ne krece isti sat
     if(!isInSameHour)
     {
+        let minBroj;
+        
         do
         {
-            if(satIndex==data.length-4) // sljedeci dan
+            if(satIndex==data.length-3) // sljedeci dan
             {
+                prosloSati += 23 - data[satIndex][0].split(':').map(Number)[0] + data[4][0].split(':').map(Number)[0];
                 satIndex = 3;
                 dan = dan > 6 ? 0 : dan + 1;
                 if (dan == 6)
@@ -135,16 +142,24 @@ function CalculateNextLineTime(data)
             }
             
             satIndex++;
+            prosloSati++;
             minKretanja = data[satIndex][danIndex].split(', ');
+            minBroj = minKretanja[0].split(/ |-/);
+            if(prosloSati==7*24)
+            {
+                isTimetableEmpty = true;
+                break;
+            }
         }
-        while(minKretanja=="");
+        while(minKretanja=="" || isNaN(minBroj[0]));
 
-        minKretanja = minKretanja.map(Number);
+        minKretanja[0] = Number(minBroj[0]);
         min = 60-min+minKretanja[0];
+        prosloSati--;
     }
 
     // konacno racunanje vremena do sljedece linije
-    sat = data[satIndex][0].split(':').map(Number)[0] - sat;
+    sat = data[satIndex][0].split(':').map(Number)[0] - sat + prosloSati;
     if(sat<0)   sat+=24;
     if(!isInSameHour)   sat--;
     if(min>=60)
@@ -153,12 +168,21 @@ function CalculateNextLineTime(data)
         sat++;
     }
 
+    if(isTimetableEmpty)
+    {
+        sat = 0;
+        min = -1;
+    }
+
     return sat*60+min;
 }
 
 function PrintNextLineTime(time = Number())
 {
-    let porukaZaLiniju = "Sljedeći autobus polazi s kolodvora za ";
+    if(time == -1)
+        return;
+    
+    let porukaZaLiniju = "Sljedeći autobus polazi za ";
     
     let sat = parseInt(time/60);
     let min = parseInt(time%60);
