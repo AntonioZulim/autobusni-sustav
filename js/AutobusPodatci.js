@@ -70,152 +70,133 @@ function ShowData(data = [[]])
 
 function CalculateNextLineTime(data)
 {
-    let vrijeme = new Date();
-    let sat = vrijeme.getHours();
-    let min = vrijeme.getMinutes();
-    let dan = vrijeme.getDay();
-    let minKretanja = [];
-    let isInSameHour = false;
-    let isHourInTable = false;
-    let isTimetableEmpty = false;
-    let satIndex = Number();
-    let danIndex;
-    let prosloSati = 0;
+    const date = new Date();
+    /*const currHour = 23;
+    const currMin = 0;
+    const currDay = 6;*/  //DEBUG
+    const currHour = date.getHours();
+    const currMin = date.getMinutes();
+    const currDay = date.getDay();
+    const minHour = Number(data[4][0].slice(0, -1));
+    const maxHour = Number(data[data.length-3][0].slice(0, -1));
+    let dayIndex;
 
-    // provjera koji je dan
-    if(dan == 6)
-        danIndex = 2;
-    else if(dan == 0)
-        danIndex = 3;
+
+    // a) je li isti sat
+    if(currDay == 6)
+        dayIndex = 2;
+    else if(currDay == 0)
+        dayIndex = 3;
     else
-        danIndex = 1;
-
-    // trazenje indeksa za trenutacni sat
-    for(satIndex = 4; satIndex<data.length-3; satIndex++)
+        dayIndex = 1;
+    
+    let cellDataArr = data[4+currHour-minHour][dayIndex].split(", ");   // vremena pocinju od indeksa 4
+    for(let i = 0; i<cellDataArr.length; i++)
     {
-        if(data[satIndex][0] == sat.toLocaleString(undefined, {minimumIntegerDigits: 2}) + ":")
+        cellDataArr[i] = cellDataArr[i].substring(0, 2);
+        if(Number(cellDataArr[i])-currMin>0)
         {
-            isHourInTable = true;
-            break;
+            return cellDataArr[i]-currMin;
         }
     }
 
-    if(isHourInTable)
+    // b) je li postoji/unutar 7 dana
+    let passedHours = 0;
+    let day = currDay;
+    let hour = currHour;
+    do
     {
-        // provjera je li sljedeca linija u isti sat
-        minKretanja = data[satIndex][danIndex].split(', ');
-        for(let i = 0; i<minKretanja.length; i++)
+        hour++;
+        if(hour>maxHour)
         {
-            let minBroj = minKretanja[i].split(/ |-/);
-            minKretanja[i] = Number(minBroj[0]);
-            if(minKretanja[i]-min>0)
-            {
-                min = minKretanja[i]-min;
-                isInSameHour = true;
-                break;
-            }
-        }
-    }
-    else    // ako trenutni sat nije u tablici
-    {
-        satIndex = 3;
-    }
-
-    // ako sljedeca linija ne krece isti sat
-    if(!isInSameHour)
-    {
-        let minBroj;
-        
-        do
-        {
-            if(satIndex==data.length-3) // sljedeci dan
-            {
-                prosloSati += 23 - data[satIndex][0].split(':').map(Number)[0] + data[4][0].split(':').map(Number)[0];
-                satIndex = 3;
-                dan = dan > 6 ? 0 : dan + 1;
-                if (dan == 6)
-                    danIndex = 2;
-                else if (dan == 0)
-                    danIndex = 3;
-                else
-                    danIndex = 1;
-            }
+            passedHours += 23-maxHour+minHour; // 24-(maxHour+1)+minHour
+            hour = minHour;
+            day++;
+            if(day==7)
+                day = 0;
             
-            satIndex++;
-            prosloSati++;
-            minKretanja = data[satIndex][danIndex].split(', ');
-            minBroj = minKretanja[0].split(/ |-/);
-            if(prosloSati==7*24)
-            {
-                isTimetableEmpty = true;
-                break;
-            }
+            if(day == 6)
+                dayIndex = 2;
+            else if(day == 0)
+                dayIndex = 3;
+            else
+                dayIndex = 1;
         }
-        while(minKretanja=="" || isNaN(minBroj[0]));
-
-        minKretanja[0] = Number(minBroj[0]);
-        min = 60-min+minKretanja[0];
-        prosloSati--;
+        const value = data[4+hour-minHour][dayIndex].substring(0, 2);
+        if(value!="" && !isNaN(Number(value)))
+        {
+            return 60-currMin + passedHours*60 + Number(value);
+        }
+        passedHours++;
     }
+    while(day!=currDay || hour!=currHour);   // !(A && B) = !A || !B
 
-    // konacno racunanje vremena do sljedece linije
-    sat = data[satIndex][0].split(':').map(Number)[0] - sat + prosloSati;
-    if(sat<0)   sat+=24;
-    if(!isInSameHour)   sat--;
-    if(min>=60)
-    {
-        min-=60;
-        sat++;
-    }
-
-    if(isTimetableEmpty)
-    {
-        sat = 0;
-        min = -1;
-    }
-
-    return sat*60+min;
+    // c) ne postoji/nije unutar 7 dana
+    return -1;
 }
 
 function PrintNextLineTime(time = Number())
 {
     if(time == -1)
-        return;
-    
-    let porukaZaLiniju = "Sljedeći autobus polazi za ";
-    
-    let sat = parseInt(time/60);
-    let min = parseInt(time%60);
-    if (sat!=0)
     {
-        porukaZaLiniju += sat;
+        tekstSljedeceLinije.innerHTML = "Nema nijedna linija sljedećih 7 dana."
+        return;
+    }
+    
+    let message = "Sljedeći autobus polazi za ";
+    
+    const days = parseInt(time/60/24);
+    const hours = parseInt(time/60%24);
+    const min = parseInt(time%60);
+
+    if (days!=0)
+    {
+        message += days;
 
         // provjera za gramaticki tocan ispis rijeci
-        if(sat%10 == 1 && parseInt(sat%100/10) != 1)
-            porukaZaLiniju += " sat";
-        else if(sat%10 < 5 && sat%10 > 1 && parseInt(sat%100/10) != 1)
-            porukaZaLiniju += " sata";
+        if(days%10 == 1 && parseInt(days%100/10) != 1)
+            message += " dan";
         else
-            porukaZaLiniju += " sati";
+            message += " dana";
+
+        if(hours!=0 && min!=0)
+            message += ", ";
+        else if(hours!=0 || min!=0)
+            message += " i ";
+        else
+            message += ".";
+    }
+
+    if (hours!=0)
+    {
+        message += hours;
+
+        // provjera za gramaticki tocan ispis rijeci
+        if(hours%10 == 1 && parseInt(hours%100/10) != 1)
+            message += " sat";
+        else if(hours%10 < 5 && hours%10 > 1 && parseInt(hours%100/10) != 1)
+            message += " sata";
+        else
+            message += " sati";
 
         if(min!=0)
-            porukaZaLiniju += " i ";
+            message += " i ";
         else
-            porukaZaLiniju += ".";
+            message += ".";
     }
 
     if(min!=0)
     {
-        porukaZaLiniju += min;
+        message += min;
 
-        // ponovna provjera za gramaticki tocan ispis rijeci
+        // provjera za gramaticki tocan ispis rijeci
         if (min%10 == 1 && parseInt(min%100/10) != 1)
-            porukaZaLiniju += " minutu.";
+            message += " minutu.";
         else if (min%10 < 5 && min%10 > 1 && parseInt(min%100/10) != 1)
-            porukaZaLiniju += " minute.";
+            message += " minute.";
         else
-            porukaZaLiniju += " minuta.";
+            message += " minuta.";
     }
 
-    tekstSljedeceLinije.innerHTML = porukaZaLiniju + "<br>" + napomena;
+    tekstSljedeceLinije.innerHTML = message + "<br>" + napomena;
 }
