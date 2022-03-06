@@ -1,4 +1,4 @@
-let link = "https://raw.githubusercontent.com/AntonioZulim/autobusni-sustav-podatci/main/vozni-red/";
+//let link = "https://raw.githubusercontent.com/AntonioZulim/autobusni-sustav-podatci/main/vozni-red/";
 let odabir = document.getElementById("odabir");
 let ruta = document.getElementById("ruta");
 
@@ -7,8 +7,7 @@ M.AutoInit();
 
 odabir.addEventListener("change", () => 
 {
-    let ime = "vozni_red" + odabir.value + ".csv";
-    ReadCSVFile(link + ime);    // poziva funkciju iz AutobusPodatci.js
+    GetBusLine(odabir.value);    // poziva funkciju iz AutobusPodatci.js
 
     PromjenaRute(odabir);
 })
