@@ -1,4 +1,3 @@
-//let link = "https://raw.githubusercontent.com/AntonioZulim/autobusni-sustav-podatci/main/vozni-red/";
 let odabir = document.getElementById("odabir");
 let ruta = document.getElementById("ruta");
 
