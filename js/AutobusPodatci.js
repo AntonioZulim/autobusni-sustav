@@ -17,7 +17,7 @@ const database = app.firestore();
 
 function GetBusLine(lineIndex)
 {
-    let line = database.collection("bus-lines").doc("line" + lineIndex);
+    let line = database.collection("bus-lines").doc("line" + lineIndex.toString().padStart(2, '0'));
     line.get().then(doc => {
         if(doc.exists){
             ManipulateTimetableData(doc.data());
@@ -53,7 +53,7 @@ function ShowData(data)
     }
     table.appendChild(tabHeadRow);
     
-    headerText = ["sati (hours)", "", "minute (minutes)", ""];
+    headerText = ["sati<br>(hours)", "", "minute (minutes)", ""];
     tabHeadRow = document.createElement("tr");
     for(let i = 0; i<4; i++)
     {
@@ -69,25 +69,26 @@ function ShowData(data)
 
         let cell = document.createElement("td");
         cell.innerText = i.toString().padStart(2, '0') + ":";
-        cell.setAttribute("class", "sati");
         tabRow.appendChild(cell);
         
         cell = document.createElement("td");
         cell.innerHTML = data.week["h" + i.toString().padStart(2, '0')].join(", ");
-        cell.setAttribute("class", "sati");
         tabRow.appendChild(cell);
-
+        
         cell = document.createElement("td");
         cell.innerHTML = data.sat["h" + i.toString().padStart(2, '0')].join(", ");
-        cell.setAttribute("class", "sati");
         tabRow.appendChild(cell);
-
+        
         cell = document.createElement("td");
         cell.innerHTML = data.sun["h" + i.toString().padStart(2, '0')].join(", ");
-        cell.setAttribute("class", "sati");
         tabRow.appendChild(cell);
-
+        
         table.appendChild(tabRow);
+    }
+    for(let i = 0; i<table.rows.length; i++)
+    {
+        let cell = table.rows[i].cells[0];
+        cell.setAttribute("class", "sati");
     }
 
     lineInfo.innerHTML = data.message.split(",").join("<br>");
@@ -144,7 +145,7 @@ function CalculateNextLineTime(data)
             else
                 dayName = 1;
         }
-        const value = data[dayName]["h" + currHour.toString().padStart(2, '0')][0];
+        const value = data[dayName]["h" + hour.toString().padStart(2, '0')][0];
         if(value!="" && !isNaN(Number(value)))
         {
             return 60-currMin + passedHours*60 + Number(value);
