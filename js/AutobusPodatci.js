@@ -21,7 +21,6 @@ function GetBusLine(lineIndex)
     line.get().then(doc => {
         if(doc.exists){
             ManipulateTimetableData(doc.data());
-            console.log(doc.data());
         }
         else{
             console.log("Error: Line does not exist");
@@ -139,11 +138,11 @@ function CalculateNextLineTime(data)
                 day = 0;
             
             if(day == 6)
-                dayName = 2;
+                dayName = "sat";
             else if(day == 0)
-                dayName = 3;
+                dayName = "sun";
             else
-                dayName = 1;
+                dayName = "week";
         }
         const value = data[dayName]["h" + hour.toString().padStart(2, '0')][0];
         if(value!="" && !isNaN(Number(value)))
