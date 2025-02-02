@@ -1,6 +1,7 @@
 # autobusni-sustav
 Projekt su izradili Antonio Zulim i Luka Štivić.
-Nastao je za potrebe završnog rada u školi programiranja "EDIT CodeSchool" 2021. Tadašnja verzija dostupna je na: https://edit.trema.hr/projekti/2021/srednjiJS/Autobusni%20sustav/
+Nastao je za potrebe završnog rada u školi programiranja "EDIT CodeSchool" 2021. Tadašnja verzija dostupna je na: https://edit.trema.hr/projekti/2021/srednjiJS/Autobusni%20sustav/.
+
 Potom je dorađen za natjecanje Razvoj softvera 2022.
 
 # Ideja
